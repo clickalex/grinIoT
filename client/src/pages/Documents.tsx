@@ -13,7 +13,7 @@ export default function Documents() {
       <div className="mb-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-sm rounded-2xl border border-[#d9a35c]/30 bg-[#3e3420]/45 p-5">
           <div className="eyebrow text-[#d9a35c]">Reading order</div>
-          <p className="mt-2 text-sm leading-6 text-[#e1d8c1]">Start with the operating brief, inspect the technical dossier, commercial case, and delivery roadmap, then use the safeguards and complete source specification as the traceable reference record.</p>
+          <p className="mt-2 text-sm leading-6 text-[#e1d8c1]">Start with the operating brief, inspect the technical dossier, commercial case, and delivery roadmap, then use the safeguards, full source specification, and the cons &amp; solutions audit as the traceable reference record.</p>
         </div>
         <div className="max-w-sm rounded-2xl border border-[#b8f15a]/25 bg-[#183929] p-5">
           <div className="eyebrow text-[#b8f15a]">Export</div>

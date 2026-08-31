@@ -4,6 +4,7 @@
 - [x] Identify the highest-impact technical, operational, commercial, and adoption risks.
 - [x] Prepare practical mitigations with clear priority and implementation timing.
 - [x] Deliver the concise cons-and-solutions assessment to the user.
+- [x] Deliver the full cons-and-solutions audit (cons-and-solutions.md) and integrate it into the on-site document library as record 07.
 
 ## Website Content Expansion
 

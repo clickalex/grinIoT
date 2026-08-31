@@ -182,9 +182,9 @@ export default function Home() {
             <article className="rounded-[1.7rem] border border-white/10 bg-[#173426] p-8 sm:p-10">
               <div className="eyebrow flex items-center gap-2 text-[#d9a35c]"><BookOpenText size={15} /> Document library</div>
               <h2 className="display mt-5 text-4xl leading-[1.02] text-[#f1fcdf] sm:text-5xl">The complete narrative,<br /><em className="font-normal text-[#d9a35c]">in sequence.</em></h2>
-              <p className="mt-5 max-w-md text-base leading-7 text-[#bcd0b4]">Operating brief, technical dossier, investment brief, delivery roadmap, launch guardrails, and the full source specification — readable on-site or exported for review.</p>
+              <p className="mt-5 max-w-md text-base leading-7 text-[#bcd0b4]">Operating brief, technical dossier, investment brief, delivery roadmap, launch guardrails, the full source specification, and the cons &amp; solutions audit — readable on-site or exported for review.</p>
               <div className="mt-7 grid gap-2.5 sm:grid-cols-2">
-                {[["Operating brief", "01"], ["Investment brief", "02"], ["Technical dossier", "03"], ["Roadmap record", "04"], ["Risk register", "05"], ["Full specification", "06"]].map(([label, number]) => (
+                {[["Operating brief", "01"], ["Investment brief", "02"], ["Technical dossier", "03"], ["Roadmap record", "04"], ["Risk register", "05"], ["Full specification", "06"], ["Cons & solutions", "07"]].map(([label, number]) => (
                   <div key={label} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[.035] px-4 py-3">
                     <span className="interface text-[.62rem] font-extrabold uppercase tracking-[.06em] text-[#d7e9cc]">{label}</span>
                     <span className="interface text-xs font-extrabold text-[#d9a35c]">{number}</span>
