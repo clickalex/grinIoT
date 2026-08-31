@@ -5,7 +5,8 @@ import { Link } from "wouter";
 import { DemoLayout } from "./DemoLayout";
 import { useGarden } from "./GardenContext";
 import { formatSimClock } from "./simulation";
-import { chartColors, clockTicks, MoistureBar, StatTile, StatusLight, tickClockLabel } from "./ui";
+import { chartColors, clockTicks, MoistureBar, StatTile, StatusLight, TelemetryFeed, tickClockLabel } from "./ui";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const tooltipStyle = {
   background: "rgba(13,30,21,.96)",
@@ -29,6 +30,7 @@ function alertIcon(kind: string) {
 }
 
 export default function DashboardPage() {
+  usePageMeta("Live demo — Overview · Grinrex IoT", "Watch the Grinrex garden loop run live: zones, valves, tank, and water rules on an accelerated clock.");
   const { state, actions } = useGarden();
   const avgMoisture = state.zones.reduce((sum, z) => sum + z.moisture, 0) / Math.max(1, state.zones.length);
   const openValves = state.zones.filter((z) => z.valveOpen).length;
@@ -155,6 +157,9 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+
+        {/* Simulated device telemetry */}
+        <TelemetryFeed state={state} />
 
         {/* Alerts + event log */}
         <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">

@@ -58,7 +58,7 @@ export default function Safety() {
             <p className="mt-3 max-w-3xl text-lg leading-8 text-[#e2efd8]">Launch a garden water-control kit, not an all-in-one urban-farming platform. Every later module must earn its place through reliable pilot evidence, user value, and a clear service model.</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/documents" className="cta-button cta-primary shrink-0">Read safeguards <ArrowRight size={15} /></Link>
+            <Link href="/documents" className="cta-button cta-primary shrink-0">Read the PRD safeguards <ArrowRight size={15} /></Link>
             <Link href="/demo/irrigation" className="cta-button cta-secondary shrink-0">Try the emergency stop</Link>
           </div>
         </div>

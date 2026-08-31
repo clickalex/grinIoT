@@ -6,6 +6,7 @@ import { Link, useLocation } from "wouter";
 import { SiteFooter } from "./SiteFooter";
 import { SiteNav } from "./SiteNav";
 import { chapters } from "@/content";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 export function ScrollToTop() {
   const [location] = useLocation();
@@ -22,13 +23,20 @@ interface PageShellProps {
   copy?: string;
   image?: string;
   imageAlt?: string;
+  metaTitle?: string;
+  metaDescription?: string;
   children: ReactNode;
 }
 
-export function PageShell({ chapterIndex, eyebrow, title, copy, image, imageAlt, children }: PageShellProps) {
+export function PageShell({ chapterIndex, eyebrow, title, copy, image, imageAlt, metaTitle, metaDescription, children }: PageShellProps) {
   const chapter = chapters[chapterIndex];
   const previous = chapters[chapterIndex - 1];
   const next = chapters[chapterIndex + 1];
+
+  usePageMeta(
+    metaTitle ?? `Chapter ${chapter.number} — ${chapter.label} · Grinrex IoT`,
+    metaDescription ?? `Grinrex IoT — ${eyebrow}: a water-intelligent operating system for urban gardens.`
+  );
 
   return (
     <div className="signal-page min-h-screen">

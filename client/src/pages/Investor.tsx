@@ -56,9 +56,9 @@ export default function Investor() {
       <div className="mt-16 flex flex-col gap-6 rounded-[1.6rem] border border-[#b8f15a]/20 bg-[#163425] p-8 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
         <div className="max-w-2xl">
           <div className="eyebrow text-[#b8f15a]">The controlled-circulation record</div>
-          <p className="mt-4 text-lg leading-8 text-[#e2efd8]">The full investment brief — opportunity, wedge logic, commercial progression, and validation gates — lives in the document library, ready to read or export.</p>
+          <p className="mt-4 text-lg leading-8 text-[#e2efd8]">The commercial model, wedge logic, progression, and validation gates now live in the consolidated PRD — one page, ready to read or export.</p>
         </div>
-        <Link href="/documents" className="cta-button cta-primary shrink-0">Open the document library <ArrowRight size={15} /></Link>
+        <Link href="/documents" className="cta-button cta-primary shrink-0">Read the PRD <ArrowRight size={15} /></Link>
       </div>
     </PageShell>
   );

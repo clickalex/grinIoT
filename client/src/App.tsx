@@ -1,27 +1,43 @@
 // Grinrex IoT app shell — multi-page Signal Garden site with a live demo section.
+// Chapter and demo pages are lazy-loaded so the landing shell stays light.
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollToTop } from "@/components/PageShell";
 import { GardenProvider } from "@/demo/GardenContext";
-import AnalyticsPage from "@/demo/AnalyticsPage";
-import DashboardPage from "@/demo/DashboardPage";
-import IrrigationPage from "@/demo/IrrigationPage";
-import WaterPage from "@/demo/WaterPage";
-import ZonesPage from "@/demo/ZonesPage";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { BrandMark } from "./components/BrandMark";
 import { Route, Switch } from "wouter";
-import Capabilities from "./pages/Capabilities";
-import Commercial from "./pages/Commercial";
-import Documents from "./pages/Documents";
-import Home from "./pages/Home";
-import Investor from "./pages/Investor";
-import NotFound from "./pages/NotFound";
-import Platform from "./pages/Platform";
-import Problem from "./pages/Problem";
-import Roadmap from "./pages/Roadmap";
-import Safety from "./pages/Safety";
-import System from "./pages/System";
+
+const Home = lazy(() => import("./pages/Home"));
+const Problem = lazy(() => import("./pages/Problem"));
+const System = lazy(() => import("./pages/System"));
+const Capabilities = lazy(() => import("./pages/Capabilities"));
+const Platform = lazy(() => import("./pages/Platform"));
+const Roadmap = lazy(() => import("./pages/Roadmap"));
+const Safety = lazy(() => import("./pages/Safety"));
+const Commercial = lazy(() => import("./pages/Commercial"));
+const Investor = lazy(() => import("./pages/Investor"));
+const Documents = lazy(() => import("./pages/Documents"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+const DashboardPage = lazy(() => import("@/demo/DashboardPage"));
+const ZonesPage = lazy(() => import("@/demo/ZonesPage"));
+const IrrigationPage = lazy(() => import("@/demo/IrrigationPage"));
+const WaterPage = lazy(() => import("@/demo/WaterPage"));
+const AnalyticsPage = lazy(() => import("@/demo/AnalyticsPage"));
+
+function PageFallback() {
+  return (
+    <div className="signal-page flex min-h-screen items-center justify-center">
+      <div className="flex flex-col items-center gap-4 text-center">
+        <BrandMark size={48} />
+        <div className="interface text-[.62rem] font-extrabold tracking-[.22em] text-[#b8f15a]">ACQUIRING SIGNAL…</div>
+      </div>
+    </div>
+  );
+}
 
 function Router() {
   return (
@@ -65,7 +81,9 @@ export default function App() {
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <Suspense fallback={<PageFallback />}>
+            <Router />
+          </Suspense>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

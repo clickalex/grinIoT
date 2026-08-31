@@ -14,7 +14,7 @@ const routes = [
   ["/safety", "safe before clever", "Emergency stop"],
   ["/commercial", "From balcony kit", "Starter kit"],
   ["/investor", "grounded in", "Evidence to earn next"],
-  ["/documents", "Document library", "Operating brief"],
+  ["/documents", "Product Requirements Document", "Document control & purpose"],
   ["/demo", "running now", "Zones live"],
   ["/demo/zones", "Zones & thresholds", "Adjust target"],
   ["/demo/irrigation", "Irrigation console", "Emergency stop"],

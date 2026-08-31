@@ -1,5 +1,8 @@
-// Grinrex IoT — shared demo widgets: status lights, moisture bars, tank gauge, stat tiles.
+// Grinrex IoT — shared demo widgets: status lights, moisture bars, tank gauge, stat tiles,
+// and the simulated device-telemetry (MQTT-style) feed.
 import type { ReactNode } from "react";
+import { Radio } from "lucide-react";
+import type { SimState } from "./simulation";
 import { formatSimClock } from "./simulation";
 
 export type DemoStatus = "ok" | "warn" | "critical" | "idle";
@@ -80,3 +83,41 @@ export function clockTicks(history: { t: number }[], count = 5) {
 }
 
 export const tickClockLabel = (t: number) => formatSimClock(t);
+
+// Simulated device telemetry: in production firmware these are real MQTT topics
+// (Wi-Fi/BLE to the edge gateway). The demo renders the same message shapes in-browser.
+export function TelemetryFeed({ state }: { state: SimState }) {
+  const topics: [string, string, string][] = [
+    ["grinrex/edge/status", state.emergencyStop ? "EMERGENCY_STOP" : "online", state.emergencyStop ? "#ff6b57" : "#b8f15a"],
+    ["grinrex/edge/weather/temp", `${state.weather.temp.toFixed(1)} °C`, "#d9a35c"],
+    ["grinrex/edge/weather/humidity", `${state.weather.humidity.toFixed(0)} %`, "#d9a35c"],
+    ["grinrex/edge/weather/rain", state.weather.raining ? `active ${Math.round(state.weather.rainIntensity * 100)}%` : "none", state.weather.raining ? "#8fd3b4" : "#8fae93"],
+    ...state.zones.map((zone) => [`grinrex/edge/${zone.id}/moisture`, `${zone.moisture.toFixed(1)} %`, "#b8f15a"] as [string, string, string]),
+    ...state.zones.map((zone) => [`grinrex/edge/${zone.id}/valve`, zone.valveOpen ? "OPEN" : "CLOSED", zone.valveOpen ? "#b8f15a" : "#8fae93"] as [string, string, string]),
+    ["grinrex/edge/tank/level", `${state.tank.level.toFixed(1)} L`, "#8fd3b4"],
+    ["grinrex/edge/flow", state.history.length ? `${state.history[state.history.length - 1].flowRate.toFixed(1)} L/min` : "0.0 L/min", "#8fd3b4"],
+    ["grinrex/edge/rules/eco", state.eco ? "on" : "off", "#b8f15a"],
+  ];
+
+  return (
+    <div className="demo-panel overflow-hidden">
+      <div className="flex items-center justify-between border-b border-white/10 px-5 py-3">
+        <span className="interface flex items-center gap-2 text-[.62rem] font-extrabold uppercase tracking-[.14em] text-[#d9a35c]">
+          <Radio size={13} /> Device telemetry bus
+        </span>
+        <span className="interface text-[.54rem] font-extrabold uppercase tracking-[.12em] text-[#8fae93]">
+          Simulated MQTT feed — device firmware publishes these topics in production
+        </span>
+      </div>
+      <div className="grid gap-x-8 gap-y-1 px-5 py-4 font-mono text-[.68rem] leading-5 sm:grid-cols-2 xl:grid-cols-3">
+        {topics.map(([topic, value, color]) => (
+          <div key={topic + value} className="flex items-baseline gap-2">
+            <span className="truncate text-[#7e9a80]">{topic}</span>
+            <span className="mx-1 shrink-0 text-[#4a624f]">→</span>
+            <span className="shrink-0" style={{ color }}>{value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

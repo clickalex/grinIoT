@@ -4,8 +4,10 @@ import { DemoLayout } from "./DemoLayout";
 import { useGarden } from "./GardenContext";
 import { formatSimClock } from "./simulation";
 import { MoistureBar, StatTile } from "./ui";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 export default function ZonesPage() {
+  usePageMeta("Live demo — Zones & thresholds · Grinrex IoT", "Per-zone soil telemetry, moisture targets, and watering control in the live Grinrex garden simulation.");
   const { state, actions } = useGarden();
   const avgMoisture = state.zones.reduce((sum, z) => sum + z.moisture, 0) / Math.max(1, state.zones.length);
 

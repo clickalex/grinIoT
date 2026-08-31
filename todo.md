@@ -4,23 +4,7 @@
 - [x] Identify the highest-impact technical, operational, commercial, and adoption risks.
 - [x] Prepare practical mitigations with clear priority and implementation timing.
 - [x] Deliver the concise cons-and-solutions assessment to the user.
-- [x] Deliver the full cons-and-solutions audit (cons-and-solutions.md) and integrate it into the on-site document library as record 07.
-
-## Website Content Expansion
-
-- [x] Consolidate the remaining shared-project details and risk mitigations into website-ready content.
-- [x] Add the risk register, MVP boundary, safety requirements, and implementation sequence to the presentation.
-- [x] Extend the document library with the complete technical, commercial, and risk materials.
-- [x] Verify the expanded presentation sequence and mobile readability.
-- [x] Save and deliver the updated project checkpoint.
-
-## Complete Source Specification Integration
-
-- [x] Audit every section and data point in `Pasted_Content_10.txt` against the current presentation.
-- [x] Add all missing architecture, feature, user-flow, pricing, operating, and roadmap details in ordered chapters.
-- [x] Expand the on-site controlled-circulation library so the full source specification remains accessible.
-- [x] Verify full-content navigation and responsive reading order.
-- [x] Save and deliver the complete source-integrated website checkpoint.
+- [x] Deliver the full cons-and-solutions audit and integrate it into the on-site document library as record 07.
 
 ## Multi-Page Site & Working Demo
 
@@ -34,3 +18,12 @@
 - [x] Working controls: auto/eco toggles, zone targets, manual watering, emergency stop, tank refill, sim speed, reset.
 - [x] Live charts (recharts) for moisture, tank level, flow, and 14-day water analytics.
 - [x] Smoke tests: every route renders; demo interactions verified (pnpm test:smoke / pnpm test:interact).
+
+## Consolidation Pass (single PRD)
+
+- [x] Delete the seven-document library and the standalone audit file — replaced by one PRD page.
+- [x] Consolidate everything into a single Product Requirements Document at /documents (19 sections, exportable .md, scroll-spy TOC).
+- [x] Completeness audit: 14/14 feature modules, 30 cons (all 23 original + 7 found in cross-check), 4/4 guardrails, 14/14 future modules, 7/7 roadmap phases, 7/7 architecture layers, 3/3 tiers, full hardware BOM — all present.
+- [x] Per-page SEO titles/meta via usePageMeta on every route.
+- [x] Code-split all chapter and demo routes (entry chunk 943 kB → 355 kB).
+- [x] Add simulated device-telemetry (MQTT-style topic) feed to the demo dashboard.

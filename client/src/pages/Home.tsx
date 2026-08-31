@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { SectionHeader } from "@/components/SectionHeader";
 import { chapters, commercialItems, featureModules, problemSignals, systemLoop } from "@/content";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 function DemoCta({ large = false }: { large?: boolean }) {
   return (
@@ -17,6 +18,10 @@ function DemoCta({ large = false }: { large?: boolean }) {
 }
 
 export default function Home() {
+  usePageMeta(
+    "Grinrex IoT — Every drop has a destination.",
+    "Grinrex IoT is the modular, water-intelligent operating system for urban gardens. Explore the system, the documents, and a working live demo."
+  );
   return (
     <div id="top" className="signal-page min-h-screen">
       <SiteNav />
@@ -180,11 +185,11 @@ export default function Home() {
               </div>
             </article>
             <article className="rounded-[1.7rem] border border-white/10 bg-[#173426] p-8 sm:p-10">
-              <div className="eyebrow flex items-center gap-2 text-[#d9a35c]"><BookOpenText size={15} /> Document library</div>
-              <h2 className="display mt-5 text-4xl leading-[1.02] text-[#f1fcdf] sm:text-5xl">The complete narrative,<br /><em className="font-normal text-[#d9a35c]">in sequence.</em></h2>
-              <p className="mt-5 max-w-md text-base leading-7 text-[#bcd0b4]">Operating brief, technical dossier, investment brief, delivery roadmap, launch guardrails, the full source specification, and the cons &amp; solutions audit — readable on-site or exported for review.</p>
+              <div className="eyebrow flex items-center gap-2 text-[#d9a35c]"><BookOpenText size={15} /> Product requirements</div>
+              <h2 className="display mt-5 text-4xl leading-[1.02] text-[#f1fcdf] sm:text-5xl">One page.<br /><em className="font-normal text-[#d9a35c]">The complete PRD.</em></h2>
+              <p className="mt-5 max-w-md text-base leading-7 text-[#bcd0b4]">Vision, problem, personas, architecture, the full 14-module feature atlas, user flows, hardware, safety, security, commercial model, roadmap, metrics, and the cons &amp; solutions audit — consolidated into a single product requirements document, exportable as Markdown.</p>
               <div className="mt-7 grid gap-2.5 sm:grid-cols-2">
-                {[["Operating brief", "01"], ["Investment brief", "02"], ["Technical dossier", "03"], ["Roadmap record", "04"], ["Risk register", "05"], ["Full specification", "06"], ["Cons & solutions", "07"]].map(([label, number]) => (
+                {[["Vision & goals", "01–02"], ["Problem & market", "03–04"], ["Concept & architecture", "05–06"], ["Features & flows", "07–08"], ["Hardware & safety", "09–10"], ["Security & compliance", "11"], ["Commercial & roadmap", "13–14"], ["Risks & cons", "16"]].map(([label, number]) => (
                   <div key={label} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[.035] px-4 py-3">
                     <span className="interface text-[.62rem] font-extrabold uppercase tracking-[.06em] text-[#d7e9cc]">{label}</span>
                     <span className="interface text-xs font-extrabold text-[#d9a35c]">{number}</span>
@@ -192,7 +197,7 @@ export default function Home() {
                 ))}
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/documents" className="cta-button cta-primary">Open the library <ArrowRight size={15} /></Link>
+                <Link href="/documents" className="cta-button cta-primary">Read the PRD <ArrowRight size={15} /></Link>
                 <Link href="/roadmap" className="cta-button cta-secondary"><Zap size={15} /> Delivery roadmap</Link>
               </div>
             </article>

@@ -2,8 +2,10 @@
 import { Home, SignalZero } from "lucide-react";
 import { Link } from "wouter";
 import { BrandMark } from "@/components/BrandMark";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 export default function NotFound() {
+  usePageMeta("Signal lost — 404 · Grinrex IoT", "This route doesn't reach the garden.");
   return (
     <div className="signal-page flex min-h-screen flex-col items-center justify-center px-5 py-20 text-center">
       <BrandMark size={64} />

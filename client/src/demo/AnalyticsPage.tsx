@@ -5,6 +5,7 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, R
 import { DemoLayout } from "./DemoLayout";
 import { useGarden } from "./GardenContext";
 import { chartColors, StatTile } from "./ui";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const tooltipStyle = {
   background: "rgba(13,30,21,.96)",
@@ -61,6 +62,7 @@ function buildHistory(): DayRecord[] {
 }
 
 export default function AnalyticsPage() {
+  usePageMeta("Live demo — Water analytics · Grinrex IoT", "14-day water record, rainwater utilization, and per-zone lifetime use in the live Grinrex simulation.");
   const { state } = useGarden();
   const history = useMemo(buildHistory, []);
 

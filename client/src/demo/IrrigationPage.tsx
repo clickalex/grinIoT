@@ -5,6 +5,7 @@ import { DemoLayout } from "./DemoLayout";
 import { useGarden } from "./GardenContext";
 import { formatSimClock } from "./simulation";
 import { chartColors, clockTicks, StatTile, tickClockLabel } from "./ui";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const tooltipStyle = {
   background: "rgba(13,30,21,.96)",
@@ -15,6 +16,7 @@ const tooltipStyle = {
 };
 
 export default function IrrigationPage() {
+  usePageMeta("Live demo — Irrigation console · Grinrex IoT", "Rule state, zone valves, flow, and the emergency stop in the live Grinrex irrigation simulation.");
   const { state, actions } = useGarden();
   const openValves = state.zones.filter((z) => z.valveOpen).length;
   const runningFlow = state.history.length > 0 ? state.history[state.history.length - 1].flowRate : 0;

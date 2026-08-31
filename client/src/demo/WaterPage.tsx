@@ -5,6 +5,7 @@ import { DemoLayout } from "./DemoLayout";
 import { useGarden } from "./GardenContext";
 import { formatSimClock } from "./simulation";
 import { chartColors, clockTicks, StatTile, TankGauge, tickClockLabel } from "./ui";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const tooltipStyle = {
   background: "rgba(13,30,21,.96)",
@@ -15,6 +16,7 @@ const tooltipStyle = {
 };
 
 export default function WaterPage() {
+  usePageMeta("Live demo — Tank & water · Grinrex IoT", "Tank levels, rainwater-first logic, refill controls, and consumption tracking in the live Grinrex simulation.");
   const { state, actions } = useGarden();
   const tank = state.tank;
   const pct = Math.round((tank.level / tank.capacity) * 100);
