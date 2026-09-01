@@ -203,9 +203,20 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const isProductionBuild = process.env.NODE_ENV === "production" || process.argv.includes("build");
+
+const plugins = [
+  react(),
+  tailwindcss(),
+  ...(isProductionBuild
+    ? []
+    : [jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()]),
+];
 
 export default defineConfig({
+  // Base path is "/" by default. For GitHub Pages project sites, set
+  // VITE_BASE_PATH to "/<repo-name>/" (see .github/workflows/deploy.yml).
+  base: process.env.VITE_BASE_PATH ?? "/",
   plugins,
   resolve: {
     alias: {
