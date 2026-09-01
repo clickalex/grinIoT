@@ -1,6 +1,6 @@
 // Grinrex IoT — Home. The opening thesis plus a compressed tour of every chapter,
 // with a direct path into the working demo.
-import { Activity, ArrowDown, ArrowRight, BookOpenText, Check, Droplets, ShieldCheck, Sprout, Waves, Zap } from "lucide-react";
+import { Activity, ArrowDown, ArrowRight, BookOpenText, Check, Droplets, ShieldCheck, SlidersHorizontal, Sprout, Waves, Zap } from "lucide-react";
 import { Link } from "wouter";
 import { BrandMark } from "@/components/BrandMark";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -172,15 +172,16 @@ export default function Home() {
               <div className="relative">
                 <div className="eyebrow flex items-center gap-2 text-[#b8f15a]"><Activity size={15} /> Working demo</div>
                 <h2 className="display mt-5 text-4xl leading-[1.02] text-[#f1fcdf] sm:text-5xl">Watch the loop<br /><em className="font-normal text-[#b8f15a]">run live.</em></h2>
-                <p className="mt-5 max-w-md text-base leading-7 text-[#bcd0b4]">A simulated garden with live telemetry, rule-based irrigation, tank safety cutoffs, rain response, eco mode, and a full event log. Every control on the demo pages is real and shared.</p>
+                <p className="mt-5 max-w-md text-base leading-7 text-[#bcd0b4]">A simulated garden on an accelerated clock: fourteen pages, one shared state. Weather, soil decay, the rule engine, harvesting, dosing, devices, camera review, and the event log all read and write the same loop. Every control on every demo page is real.</p>
                 <ul className="mt-6 space-y-2.5">
-                  {["Live dashboard with zones and valves", "Emergency stop and tank-low cutoff", "Rain, heat, and moisture alerts", "Water analytics with savings estimate"].map((item) => (
+                  {["Live dashboard with zones and valves", "Emergency stop, tank-low cutoff, cycle limits", "Watering windows and dry-run preview", "Device fleet: battery, radio, faults, OTA", "Rain harvest, dosing, camera review, tasks", "Water analytics with savings estimate"].map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-6 text-[#d7e9cc]"><Check className="mt-1 shrink-0 text-[#b8f15a]" size={15} />{item}</li>
                   ))}
                 </ul>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <DemoCta large />
                   <Link href="/demo/irrigation" className="cta-button cta-secondary"><Droplets size={15} /> Irrigation console</Link>
+                  <Link href="/demo/rules" className="cta-button cta-secondary"><SlidersHorizontal size={15} /> Rules &amp; schedules</Link>
                 </div>
               </div>
             </article>

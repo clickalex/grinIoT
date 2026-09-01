@@ -11,7 +11,8 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test:smoke": "esbuild scripts/smoke-entry.tsx --bundle --splitting --platform=node --format=esm --outdir=.smoke --external:jsdom --alias:@=./client/src --jsx=automatic --log-level=warning && node scripts/smoke.mjs",
-    "test:interact": "esbuild scripts/smoke-entry.tsx --bundle --splitting --platform=node --format=esm --outdir=.smoke --external:jsdom --alias:@=./client/src --jsx=automatic --log-level=warning && node scripts/interact-smoke.mjs"
+    "test:interact": "esbuild scripts/smoke-entry.tsx --bundle --splitting --platform=node --format=esm --outdir=.smoke --external:jsdom --alias:@=./client/src --jsx=automatic --log-level=warning && node scripts/interact-smoke.mjs",
+    "test:audit": "esbuild client/src/demo/simulation.ts --bundle --format=esm --platform=node --outfile=.smoke/simulation-audit.mjs --log-level=error && esbuild client/src/demo/sections.ts --bundle --format=esm --platform=node --outfile=.smoke/sections-audit.mjs --external:lucide-react --alias:@=./client/src --log-level=error && esbuild scripts/smoke-entry.tsx --bundle --splitting --platform=node --format=esm --outdir=.smoke --external:jsdom --alias:@=./client/src --jsx=automatic --log-level=warning && node scripts/data-audit.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

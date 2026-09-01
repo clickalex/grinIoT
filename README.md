@@ -2,7 +2,7 @@
 
 A modular, water-intelligent operating system for urban gardens. The site is a
 pure client-side React SPA (Vite + React + Tailwind + wouter) with a live,
-fully simulated demo section — no backend required.
+fully simulated 14-page demo section — no backend required.
 
 ## Local development
 
@@ -12,12 +12,38 @@ pnpm install
 pnpm dev               # http://localhost:3000
 ```
 
+## The live demo
+
+Fourteen pages, one shared simulation (`client/src/demo/`). The tab bar groups them:
+
+| Group               | Pages                                              |
+| ------------------- | -------------------------------------------------- |
+| Garden loop         | Overview, Zones, Irrigation, Tank & water, Harvest |
+| Garden intelligence | Weather, Camera, Fertilizer, Tasks                 |
+| System & evidence   | Rules, Devices, Alerts, Analytics, Settings        |
+
+Nothing on those pages is a screenshot: the tick engine in `simulation.ts` drives
+soil decay, weather, rain harvesting, the rule engine (windows, cycle limits,
+rain hold-over, freeze guard, dry-run), tank safety cutoffs, device battery/radio/
+firmware and faults, fertilizer dosing, camera captures with human-confirmed pest
+review, and generated garden tasks. `GardenProvider` holds that state once for all
+demo pages, so a change made on Rules is visible on Overview, and every action is
+written to the shared event log. The page list lives in one place —
+`client/src/demo/sections.ts` — which feeds the tab bar, the footer, and the tests.
+
+The demo runs inside a nested wouter route (`<Route path="/demo" nest>`), which resolves every
+`Link` against `/demo`. So links _between_ demo pages are relative (`demoLink("/zones")` → the
+browser gets `#/demo/zones`), while links _into_ the demo from the marketing pages carry the
+prefix (`demoHref("/zones")`). Getting that backwards renders `#/demo/demo/zones`, which lands on
+the 404 page — `pnpm test:smoke` fails loudly if any demo link does it.
+
 ## Tests
 
 ```bash
 pnpm check             # TypeScript
-pnpm test:smoke        # renders every route in jsdom and asserts content
-pnpm test:interact     # drives the demo controls in jsdom
+pnpm test:smoke        # renders every route in jsdom and asserts content (24 routes)
+pnpm test:interact     # drives the demo controls in jsdom (50 checks)
+pnpm test:audit        # 156 data checks: the sim moves, every page renders it live, tabs link through
 ```
 
 ## Deploy to GitHub Pages (demo)
@@ -58,22 +84,31 @@ edit `VITE_BASE_PATH` in `.github/workflows/deploy.yml` to `/new-repo-name/`
 
 ### Demo URL list
 
-| Page              | URL                                        |
-| ----------------- | ------------------------------------------ |
-| Home              | `/#/`                                      |
-| Problem           | `/#/problem`                               |
-| System            | `/#/system`                                |
-| Capabilities      | `/#/capabilities`                          |
-| Platform          | `/#/platform`                              |
-| Roadmap           | `/#/roadmap`                               |
-| Safety            | `/#/safety`                                |
-| Commercial        | `/#/commercial`                            |
-| Investor          | `/#/investor`                              |
-| Documents         | `/#/documents`                             |
-| Demo dashboard    | `/#/demo`                                  |
-| Demo zones        | `/#/demo/zones`                            |
-| Demo irrigation   | `/#/demo/irrigation`                       |
-| Demo water        | `/#/demo/water`                            |
-| Demo analytics    | `/#/demo/analytics`                        |
+| Page              | URL                  |
+| ----------------- | -------------------- |
+| Home              | `/#/`                |
+| Problem           | `/#/problem`         |
+| System            | `/#/system`          |
+| Capabilities      | `/#/capabilities`    |
+| Platform          | `/#/platform`        |
+| Roadmap           | `/#/roadmap`         |
+| Safety            | `/#/safety`          |
+| Commercial        | `/#/commercial`      |
+| Investor          | `/#/investor`        |
+| Documents         | `/#/documents`       |
+| Demo overview     | `/#/demo`            |
+| Demo zones        | `/#/demo/zones`      |
+| Demo irrigation   | `/#/demo/irrigation` |
+| Demo tank & water | `/#/demo/water`      |
+| Demo harvest      | `/#/demo/harvest`    |
+| Demo weather      | `/#/demo/weather`    |
+| Demo camera       | `/#/demo/camera`     |
+| Demo fertilizer   | `/#/demo/fertilizer` |
+| Demo tasks        | `/#/demo/tasks`      |
+| Demo rules        | `/#/demo/rules`      |
+| Demo devices      | `/#/demo/devices`    |
+| Demo alerts       | `/#/demo/alerts`     |
+| Demo analytics    | `/#/demo/analytics`  |
+| Demo settings     | `/#/demo/settings`   |
 
 Prefix each path with `https://clickalex.github.io/grinIoT`.

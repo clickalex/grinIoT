@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { Radio } from "lucide-react";
 import type { SimState } from "./simulation";
 import { formatSimClock } from "./simulation";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { demoTabMeta } from "./sections";
 
 export type DemoStatus = "ok" | "warn" | "critical" | "idle";
 
@@ -43,7 +45,7 @@ export function StatTile({ label, value, sub, tone = "text-[#efffd3]", icon }: {
   );
 }
 
-export function TankGauge({ level, capacity, low, critical }: { level: number; capacity: number; low: number; critical: number }) {
+export function TankGauge({ level, capacity, low, critical, unit = "L" }: { level: number; capacity: number; low: number; critical: number; unit?: string }) {
   const pct = Math.max(0, Math.min(100, (level / capacity) * 100));
   const R = 64;
   const C = 2 * Math.PI * R;
@@ -56,7 +58,10 @@ export function TankGauge({ level, capacity, low, critical }: { level: number; c
         <circle cx={85} cy={85} r={R} fill="none" stroke={tone} strokeWidth={12} strokeLinecap="round" strokeDasharray={C} strokeDashoffset={offset} className="gauge-arc" />
       </svg>
       <div className="absolute text-center">
-        <div className="interface text-3xl font-extrabold" style={{ color: tone }}>{Math.round(level)}<span className="text-base"> L</span></div>
+        <div className="interface text-3xl font-extrabold" style={{ color: tone }}>
+          {Math.round(level)}
+          <span className="text-base"> {unit}</span>
+        </div>
         <div className="interface mt-0.5 text-[.58rem] font-extrabold tracking-[.14em] text-[#8fae93]">{Math.round(pct)}% FULL</div>
       </div>
     </div>
@@ -82,7 +87,7 @@ export function clockTicks(history: { t: number }[], count = 5) {
   return ticks;
 }
 
-export const tickClockLabel = (t: number) => formatSimClock(t);
+export const tickClockLabel = (t: number, clock24h = true) => formatSimClock(t, clock24h);
 
 // Simulated device telemetry: in production firmware these are real MQTT topics
 // (Wi-Fi/BLE to the edge gateway). The demo renders the same message shapes in-browser.
@@ -92,8 +97,8 @@ export function TelemetryFeed({ state }: { state: SimState }) {
     ["grinrex/edge/weather/temp", `${state.weather.temp.toFixed(1)} °C`, "#d9a35c"],
     ["grinrex/edge/weather/humidity", `${state.weather.humidity.toFixed(0)} %`, "#d9a35c"],
     ["grinrex/edge/weather/rain", state.weather.raining ? `active ${Math.round(state.weather.rainIntensity * 100)}%` : "none", state.weather.raining ? "#8fd3b4" : "#8fae93"],
-    ...state.zones.map((zone) => [`grinrex/edge/${zone.id}/moisture`, `${zone.moisture.toFixed(1)} %`, "#b8f15a"] as [string, string, string]),
-    ...state.zones.map((zone) => [`grinrex/edge/${zone.id}/valve`, zone.valveOpen ? "OPEN" : "CLOSED", zone.valveOpen ? "#b8f15a" : "#8fae93"] as [string, string, string]),
+    ...state.zones.map(zone => [`grinrex/edge/${zone.id}/moisture`, `${zone.moisture.toFixed(1)} %`, "#b8f15a"] as [string, string, string]),
+    ...state.zones.map(zone => [`grinrex/edge/${zone.id}/valve`, zone.valveOpen ? "OPEN" : "CLOSED", zone.valveOpen ? "#b8f15a" : "#8fae93"] as [string, string, string]),
     ["grinrex/edge/tank/level", `${state.tank.level.toFixed(1)} L`, "#8fd3b4"],
     ["grinrex/edge/flow", state.history.length ? `${state.history[state.history.length - 1].flowRate.toFixed(1)} L/min` : "0.0 L/min", "#8fd3b4"],
     ["grinrex/edge/rules/eco", state.eco ? "on" : "off", "#b8f15a"],
@@ -105,19 +110,67 @@ export function TelemetryFeed({ state }: { state: SimState }) {
         <span className="interface flex items-center gap-2 text-[.62rem] font-extrabold uppercase tracking-[.14em] text-[#d9a35c]">
           <Radio size={13} /> Device telemetry bus
         </span>
-        <span className="interface text-[.54rem] font-extrabold uppercase tracking-[.12em] text-[#8fae93]">
-          Simulated MQTT feed — device firmware publishes these topics in production
-        </span>
+        <span className="interface text-[.54rem] font-extrabold uppercase tracking-[.12em] text-[#8fae93]">Simulated MQTT feed — device firmware publishes these topics in production</span>
       </div>
       <div className="grid gap-x-8 gap-y-1 px-5 py-4 font-mono text-[.68rem] leading-5 sm:grid-cols-2 xl:grid-cols-3">
         {topics.map(([topic, value, color]) => (
           <div key={topic + value} className="flex items-baseline gap-2">
             <span className="truncate text-[#7e9a80]">{topic}</span>
             <span className="mx-1 shrink-0 text-[#4a624f]">→</span>
-            <span className="shrink-0" style={{ color }}>{value}</span>
+            <span className="shrink-0" style={{ color }}>
+              {value}
+            </span>
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+// ---- shared page furniture used by the demo pages --------------------------
+export const tooltipStyle = {
+  background: "rgba(13,30,21,.96)",
+  border: "1px solid rgba(184,241,90,.25)",
+  borderRadius: "0.8rem",
+  fontSize: "0.72rem",
+  color: "#e3f1d5",
+};
+
+/** Page metadata for a demo route, sourced from the demo section registry. */
+export function useDemoMeta(path: string) {
+  const section = demoTabMeta.get(path);
+  usePageMeta(section?.metaTitle ?? "Live demo · Grinrex IoT", section?.metaDescription ?? section?.blurb);
+}
+
+export function DemoPageHeader({ path, title, accent, copy, aside }: { path: string; title: string; accent?: string; copy: string; aside?: ReactNode }) {
+  const section = demoTabMeta.get(path);
+  return (
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <div className="eyebrow text-[#b8f15a]">Live demo / {section?.title ?? ""}</div>
+        <h1 className="display mt-3 text-4xl leading-[1.02] text-[#f4ffe5] sm:text-5xl">
+          {title}
+          {accent ? (
+            <>
+              ,<br />
+              <em className="font-normal text-[#b8f15a]">{accent}</em>
+            </>
+          ) : (
+            "."
+          )}
+        </h1>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-[#a9c1a2]">{copy}</p>
+      </div>
+      {aside && <div className="flex flex-wrap items-end gap-3">{aside}</div>}
+    </div>
+  );
+}
+
+export function DemoSectionTitle({ title, note, action }: { title: string; note?: ReactNode; action?: ReactNode }) {
+  return (
+    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <h2 className="interface text-[.68rem] font-extrabold uppercase tracking-[.16em] text-[#d9a35c]">{title}</h2>
+      {action ?? (note ? <span className="interface text-[.58rem] font-extrabold uppercase tracking-[.1em] text-[#8fae93]">{note}</span> : null)}
     </div>
   );
 }

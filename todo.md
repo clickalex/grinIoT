@@ -27,3 +27,16 @@
 - [x] Per-page SEO titles/meta via usePageMeta on every route.
 - [x] Code-split all chapter and demo routes (entry chunk 943 kB → 355 kB).
 - [x] Add simulated device-telemetry (MQTT-style topic) feed to the demo dashboard.
+
+## Demo Page Parity (14 live pages)
+
+- [x] Add the missing demo pages: Weather & microclimate, Rainwater harvest, Rules & schedules, Devices & telemetry, Alerts & event log, Growth & pest camera, Fertilizer dosing, Garden tasks & notes, Site settings.
+- [x] Single demo page registry (`client/src/demo/sections.ts`) feeding the grouped tab bar, the footer column, page metadata, and the smoke-test route list.
+- [x] Extend the simulation, not just the UI: schedule windows, max-cycle guardrail, rain hold-over, freeze guard, dry-run mode, device fleet (battery, radio, faults, OTA), fertilizer channels + lockout, camera captures + human pest review, generated tasks + notes, rain harvesting into the tank, retention-driven log buffer, unit system and quiet hours.
+- [x] Cross-page coherence: every new control writes to the shared event log; settings (units, clock, notifications, offline fallback) change what other demo pages show.
+- [x] Tests: 24/24 route smoke tests and 50/50 interaction checks (dry-run, window disarm, guardrail change, device dropout, alert ack + log search, capture + review, locked-out dose refusal, task/note capture, harvest sizing, settings propagation, battery burn-out).
+- [x] Fix the jsdom harness to install the DOM before react-dom loads, so React's delegated `onChange` fires for sliders, inputs, and textareas in tests.
+- [x] Docs: README demo map + URL list, PRD §18 delivery snapshot refreshed.
+- [x] Keep device battery un-rounded in `simTick`: rounding to 0.1% per 4 sim-minutes rounded a real drain away, so batteries sat at one value forever. `+1 day power` on the fleet page fast-forwards a node's budget to reach the low-battery path on demand.
+- [x] Fix every in-demo link: `<Link href="/demo/zones">` inside the nested router renders `#/demo/demo/zones` and 404s. Links between demo pages are now relative (`demoLink`); `demoHref` is only for the marketing pages.
+- [x] `pnpm test:audit` — 156 data checks over three layers: the engine runs 1500 ticks with churn injected and every field is swept for non-finite values; each page is mounted, left to tick, and every control clicked; the tab bar is walked to prove each href lands and shared state (dry run, emergency stop, day counter) survives navigation.

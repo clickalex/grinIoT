@@ -169,11 +169,21 @@ button { font-family: inherit; }
   color: #c9dcbf; background: rgba(255,255,255,.03); transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
 .demo-chip[data-on="true"] { background: rgba(184,241,90,.14); border-color: rgba(184,241,90,.45); color: #d6ff9e; }
+.demo-chip:disabled { opacity: .45; cursor: not-allowed; }
+.demo-field {
+  border-radius: .7rem; border: 1px solid rgba(224,255,188,.16); background: rgba(8,21,15,.55);
+  padding: .5rem .7rem; color: #e6f4dc; font-size: .8rem; outline: none; transition: border-color .15s ease, background .15s ease;
+}
+.demo-field::placeholder { color: rgba(158,186,158,.6); }
+.demo-field:focus { border-color: rgba(184,241,90,.55); background: rgba(8,21,15,.8); }
+.demo-field[type="time"] { font-family: var(--font-interface); letter-spacing: .04em; }
+.demo-field[type="time"]::-webkit-calendar-picker-indicator { filter: invert(.85) sepia(.4) saturate(3) hue-rotate(40deg); cursor: pointer; }
 .demo-tab {
   position: relative; padding: .8rem 1rem; border-radius: .9rem; white-space: nowrap;
   font-family: var(--font-interface); font-size: .62rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
   color: #9dbd9f; transition: color .15s ease, background .15s ease;
 }
+.demo-tab:hover { color: #d7e9cc; }
 .demo-tab[data-active="true"] { color: #efffd3; background: rgba(184,241,90,.12); }
 .demo-tab[data-active="true"]::after { content: ""; position: absolute; left: 1rem; right: 1rem; bottom: .3rem; height: 2px; background: #b8f15a; border-radius: 2px; }
 .demo-panel {
