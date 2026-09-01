@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting…</title>
+    <meta name="robots" content="noindex" />
+    <script>
+      // GitHub Pages SPA fallback.
+      // GitHub Pages serves this file for any unknown path. The app uses
+      // hash-based routing (#/demo, #/system, ...), so rewrite clean URLs to
+      // their hash-route equivalent, e.g. /grinIoT/demo/zones -> /grinIoT/#/demo/zones
+      (function () {
+        var l = window.location;
+        var base = "/grinIoT";
+        var hasBase = l.pathname === base || l.pathname.indexOf(base + "/") === 0;
+        var rest = hasBase ? l.pathname.slice(base.length) : l.pathname;
+        if (!rest || rest === "/index.html" || rest === "/404.html") rest = "/";
+        l.replace((hasBase ? base : "") + "/#" + rest + l.search + l.hash);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

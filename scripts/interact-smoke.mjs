@@ -4,7 +4,7 @@ import { renderApp } from "../.smoke/smoke-entry.js";
 
 function setup(route) {
   const dom = new JSDOM('<!doctype html><html><body><div id="root"></div></body></html>', {
-    url: `http://localhost:3000${route}`,
+    url: `http://localhost:3000/#${route}`,
     pretendToBeVisual: true,
     runScripts: "outside-only",
   });

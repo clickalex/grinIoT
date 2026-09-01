@@ -69,7 +69,7 @@ let failures = 0;
 
 for (const [route, ...expectations] of routes) {
   const dom = new JSDOM('<!doctype html><html><body><div id="root"></div></body></html>', {
-    url: `http://localhost:3000${route}`,
+    url: `http://localhost:3000/#${route}`,
     pretendToBeVisual: true,
     runScripts: "outside-only",
   });

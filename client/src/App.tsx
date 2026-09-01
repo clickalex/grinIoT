@@ -8,7 +8,8 @@ import { GardenProvider } from "@/demo/GardenContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { BrandMark } from "./components/BrandMark";
-import { Route, Switch } from "wouter";
+import { Route, Router, Switch } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location";
 
 const Home = lazy(() => import("./pages/Home"));
 const Problem = lazy(() => import("./pages/Problem"));
@@ -39,9 +40,11 @@ function PageFallback() {
   );
 }
 
-function Router() {
+function AppRoutes() {
   return (
-    <>
+    // Hash-based routing (#/demo, #/system, ...) so every page works when the
+    // app is hosted as a static site on GitHub Pages (no server fallback).
+    <Router hook={useHashLocation}>
       <ScrollToTop />
       <Switch>
         <Route path="/" component={Home} />
@@ -71,7 +74,7 @@ function Router() {
 
         <Route component={NotFound} />
       </Switch>
-    </>
+    </Router>
   );
 }
 
@@ -82,7 +85,7 @@ export default function App() {
         <TooltipProvider>
           <Toaster />
           <Suspense fallback={<PageFallback />}>
-            <Router />
+            <AppRoutes />
           </Suspense>
         </TooltipProvider>
       </ThemeProvider>
