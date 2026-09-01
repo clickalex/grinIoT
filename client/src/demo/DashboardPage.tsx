@@ -4,7 +4,7 @@ import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Too
 import { Link } from "wouter";
 import { DemoLayout } from "./DemoLayout";
 import { useGarden } from "./GardenContext";
-import { formatSimClock } from "./simulation";
+import { formatSimClock, formatTemp } from "./simulation";
 import { chartColors, clockTicks, MoistureBar, StatTile, StatusLight, TelemetryFeed, tickClockLabel } from "./ui";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -33,8 +33,8 @@ export default function DashboardPage() {
   usePageMeta("Live demo — Overview · Grinrex IoT", "Watch the Grinrex garden loop run live: zones, valves, tank, and water rules on an accelerated clock.");
   const { state, actions } = useGarden();
   const avgMoisture = state.zones.reduce((sum, z) => sum + z.moisture, 0) / Math.max(1, state.zones.length);
-  const openValves = state.zones.filter((z) => z.valveOpen).length;
-  const autoZones = state.zones.filter((z) => z.auto).length;
+  const openValves = state.zones.filter(z => z.valveOpen).length;
+  const autoZones = state.zones.filter(z => z.auto).length;
   const tankPct = Math.round((state.tank.level / state.tank.capacity) * 100);
   const w = state.weather;
 
@@ -45,10 +45,13 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="eyebrow text-[#b8f15a]">Live demo / Overview</div>
-            <h1 className="display mt-3 text-4xl leading-[1.02] text-[#f4ffe5] sm:text-5xl">The garden loop,<br /><em className="font-normal text-[#b8f15a]">running now.</em></h1>
+            <h1 className="display mt-3 text-4xl leading-[1.02] text-[#f4ffe5] sm:text-5xl">
+              The garden loop,
+              <br />
+              <em className="font-normal text-[#b8f15a]">running now.</em>
+            </h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-[#a9c1a2]">
-              This is a simulated garden on an accelerated clock. Soil moisture decays, rules open valves, the tank drains, rain pauses watering —
-              every control on this site is live and shared across all demo pages.
+              This is a simulated garden on an accelerated clock. Soil moisture decays, rules open valves, the tank drains, rain pauses watering — every control on this site is live and shared across all demo pages.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -61,10 +64,16 @@ export default function DashboardPage() {
         {/* KPI tiles */}
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
           <StatTile label="Avg soil moisture" value={`${avgMoisture.toFixed(0)}%`} sub="across all zones" icon={<Sprout size={16} className="text-[#b8f15a]" />} />
-          <StatTile label="Tank level" value={`${tankPct}%`} sub={`${state.tank.level.toFixed(0)} / ${state.tank.capacity} L`} tone={tankPct <= 14 ? "text-[#ff9c8c]" : tankPct <= 30 ? "text-[#ffd49c]" : "text-[#efffd3]"} icon={<Waves size={16} className="text-[#8fd3b4]" />} />
+          <StatTile
+            label="Tank level"
+            value={`${tankPct}%`}
+            sub={`${state.tank.level.toFixed(0)} / ${state.tank.capacity} L`}
+            tone={tankPct <= 14 ? "text-[#ff9c8c]" : tankPct <= 30 ? "text-[#ffd49c]" : "text-[#efffd3]"}
+            icon={<Waves size={16} className="text-[#8fd3b4]" />}
+          />
           <StatTile label="Valves open" value={`${openValves}/${state.zones.length}`} sub={`${autoZones} zones in auto`} tone="text-[#b8f15a]" icon={<Droplets size={16} className="text-[#b8f15a]" />} />
           <StatTile label="Water today" value={`${state.waterToday.toFixed(1)} L`} sub={`${state.rainwaterToday.toFixed(1)} L from rain`} icon={<CloudRain size={16} className="text-[#8fd3b4]" />} />
-          <StatTile label="Temperature" value={`${w.temp.toFixed(1)}°C`} sub={`${w.humidity.toFixed(0)}% humidity`} icon={<Thermometer size={16} className="text-[#d9a35c]" />} />
+          <StatTile label="Temperature" value={formatTemp(w.temp, state.settings.units)} sub={`${w.humidity.toFixed(0)}% humidity`} icon={<Thermometer size={16} className="text-[#d9a35c]" />} />
           <StatTile label="Sim clock" value={formatSimClock(state.simMin)} sub={`day ${Math.floor(state.simMin / 1440) + 1} · ${state.speed}× speed`} icon={<GaugeIcon size={16} className="text-[#8fae93]" />} />
         </div>
 
@@ -72,25 +81,27 @@ export default function DashboardPage() {
         <div>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="interface text-[.68rem] font-extrabold uppercase tracking-[.16em] text-[#d9a35c]">Zones live</h2>
-            <Link href="/demo/zones" className="interface text-[.62rem] font-extrabold uppercase tracking-[.1em] text-[#b8f15a] hover:text-[#d0ff88]">Manage zones →</Link>
+            <Link href="/zones" className="interface text-[.62rem] font-extrabold uppercase tracking-[.1em] text-[#b8f15a] hover:text-[#d0ff88]">
+              Manage zones →
+            </Link>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {state.zones.map((zone) => (
+            {state.zones.map(zone => (
               <article className="glass-panel rounded-[1.3rem] p-5" key={zone.id}>
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h3 className="font-bold text-[#effadf]">{zone.name}</h3>
                     <p className="mt-0.5 text-xs text-[#8fae93]">{zone.plant}</p>
                   </div>
-                  <span className={`valve-badge ${zone.valveOpen ? "valve-open" : "valve-closed"}`}>
-                    {zone.valveOpen ? "Valve open" : zone.auto ? "Auto" : "Manual"}
-                  </span>
+                  <span className={`valve-badge ${zone.valveOpen ? "valve-open" : "valve-closed"}`}>{zone.valveOpen ? "Valve open" : zone.auto ? "Auto" : "Manual"}</span>
                 </div>
                 <div className="mt-5 flex items-baseline justify-between">
                   <span className={`interface text-2xl font-extrabold ${zone.moisture < zone.target - 6 ? "text-[#ffd49c]" : "text-[#efffd3]"}`}>{zone.moisture.toFixed(0)}%</span>
                   <span className="interface text-[.58rem] font-extrabold tracking-[.1em] text-[#8fae93]">TARGET {zone.target.toFixed(0)}%</span>
                 </div>
-                <div className="mt-2"><MoistureBar moisture={zone.moisture} target={zone.target} /></div>
+                <div className="mt-2">
+                  <MoistureBar moisture={zone.moisture} target={zone.target} />
+                </div>
                 <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-[.68rem] text-[#8fae93]">
                   <span>{zone.temp.toFixed(1)}°C</span>
                   <button
@@ -123,9 +134,9 @@ export default function DashboardPage() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid stroke={chartColors.grid} strokeDasharray="3 6" vertical={false} />
-                  <XAxis dataKey="t" ticks={clockTicks(state.history)} tickFormatter={tickClockLabel} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
+                  <XAxis dataKey="t" ticks={clockTicks(state.history)} tickFormatter={t => tickClockLabel(t, state.settings.clock24h)} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
                   <YAxis domain={[0, 100]} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
-                  <Tooltip contentStyle={tooltipStyle} labelFormatter={(t) => formatSimClock(Number(t))} />
+                  <Tooltip contentStyle={tooltipStyle} labelFormatter={t => formatSimClock(Number(t), state.settings.clock24h)} />
                   <Area type="monotone" dataKey="avgMoisture" name="Moisture %" stroke={chartColors.lime} strokeWidth={2} fill="url(#moistureFill)" isAnimationActive={false} />
                 </AreaChart>
               </ResponsiveContainer>
@@ -146,9 +157,9 @@ export default function DashboardPage() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid stroke={chartColors.grid} strokeDasharray="3 6" vertical={false} />
-                  <XAxis dataKey="t" ticks={clockTicks(state.history)} tickFormatter={tickClockLabel} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
+                  <XAxis dataKey="t" ticks={clockTicks(state.history)} tickFormatter={t => tickClockLabel(t, state.settings.clock24h)} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
                   <YAxis domain={[0, state.tank.capacity]} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
-                  <Tooltip contentStyle={tooltipStyle} labelFormatter={(t) => formatSimClock(Number(t))} />
+                  <Tooltip contentStyle={tooltipStyle} labelFormatter={t => formatSimClock(Number(t), state.settings.clock24h)} />
                   <ReferenceLine y={state.tank.criticalThreshold} stroke="#ff6b57" strokeDasharray="4 4" />
                   <ReferenceLine y={state.tank.lowThreshold} stroke="#d9a35c" strokeDasharray="4 4" />
                   <Area type="monotone" dataKey="tankLevel" name="Liters" stroke={chartColors.aqua} strokeWidth={2} fill="url(#tankFill)" isAnimationActive={false} />
@@ -169,7 +180,7 @@ export default function DashboardPage() {
               <p className="mt-4 text-sm text-[#8fae93]">No active alerts. The loop is calm.</p>
             ) : (
               <ul className="mt-4 space-y-2.5">
-                {state.alerts.slice(0, 6).map((alert) => (
+                {state.alerts.slice(0, 6).map(alert => (
                   <li key={alert.id} className="alert-item rounded-lg bg-white/[.035] p-3" data-kind={alert.kind}>
                     <div className="flex items-center gap-2.5">
                       {alertIcon(alert.kind)}
@@ -185,10 +196,12 @@ export default function DashboardPage() {
           <div className="demo-panel p-5">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="interface text-[.68rem] font-extrabold uppercase tracking-[.16em] text-[#d9a35c]">Event log</h2>
-              <Link href="/demo/irrigation" className="interface text-[.62rem] font-extrabold uppercase tracking-[.1em] text-[#b8f15a] hover:text-[#d0ff88]">Irrigation console →</Link>
+              <Link href="/irrigation" className="interface text-[.62rem] font-extrabold uppercase tracking-[.1em] text-[#b8f15a] hover:text-[#d0ff88]">
+                Irrigation console →
+              </Link>
             </div>
             <ul className="demo-scroll max-h-72 space-y-2 overflow-y-auto pr-1">
-              {state.log.slice(0, 40).map((entry) => (
+              {state.log.slice(0, 40).map(entry => (
                 <li key={entry.id} className="alert-item rounded-lg bg-white/[.03] px-3 py-2" data-kind={entry.kind}>
                   <div className="flex items-center gap-2">
                     {alertIcon(entry.kind)}
@@ -215,7 +228,9 @@ export default function DashboardPage() {
             const IconCmp = Icon as typeof Thermometer;
             return (
               <div key={label as string} className="flex items-center gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#b8f15a]/12 text-[#b8f15a]"><IconCmp size={16} /></div>
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#b8f15a]/12 text-[#b8f15a]">
+                  <IconCmp size={16} />
+                </div>
                 <div>
                   <div className="interface text-[.56rem] font-extrabold uppercase tracking-[.12em] text-[#8fae93]">{label as string}</div>
                   <div className="interface mt-0.5 text-sm font-extrabold text-[#efffd3]">{value as string}</div>

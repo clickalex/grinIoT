@@ -18,7 +18,7 @@ const tooltipStyle = {
 export default function IrrigationPage() {
   usePageMeta("Live demo — Irrigation console · Grinrex IoT", "Rule state, zone valves, flow, and the emergency stop in the live Grinrex irrigation simulation.");
   const { state, actions } = useGarden();
-  const openValves = state.zones.filter((z) => z.valveOpen).length;
+  const openValves = state.zones.filter(z => z.valveOpen).length;
   const runningFlow = state.history.length > 0 ? state.history[state.history.length - 1].flowRate : 0;
 
   return (
@@ -29,8 +29,7 @@ export default function IrrigationPage() {
             <div className="eyebrow text-[#b8f15a]">Live demo / Irrigation</div>
             <h1 className="display mt-3 text-4xl leading-[1.02] text-[#f4ffe5] sm:text-5xl">Irrigation console.</h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-[#a9c1a2]">
-              The same controls a garden owner sees: global rules, per-zone valves, the emergency stop, and the operating log.
-              Watch the flow rise when a valve opens — and stop instantly when the red button is pressed.
+              The same controls a garden owner sees: global rules, per-zone valves, the emergency stop, and the operating log. Watch the flow rise when a valve opens — and stop instantly when the red button is pressed.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -47,7 +46,9 @@ export default function IrrigationPage() {
               <span className={`status-light ${state.autoGlobal ? "" : "status-light"}`} data-state={state.autoGlobal ? "ok" : "idle"} />
             </div>
             <p className="mt-3 text-sm leading-6 text-[#afc5a7]">Rule engine opens valves when a zone falls below its target — and closes them at the stop moisture.</p>
-            <button className="demo-chip mt-4" data-on={state.autoGlobal} onClick={actions.toggleAuto}>{state.autoGlobal ? "Auto on" : "Auto off"}</button>
+            <button className="demo-chip mt-4" data-on={state.autoGlobal} onClick={actions.toggleAuto}>
+              {state.autoGlobal ? "Auto on" : "Auto off"}
+            </button>
           </article>
           <article className="demo-panel p-5">
             <div className="flex items-center justify-between">
@@ -55,7 +56,9 @@ export default function IrrigationPage() {
               <span className="status-light" data-state={state.eco ? "ok" : "idle"} />
             </div>
             <p className="mt-3 text-sm leading-6 text-[#afc5a7]">Rainwater first, leaner cycles: valves close closer to the target instead of overshooting it.</p>
-            <button className="demo-chip mt-4" data-on={state.eco} onClick={actions.toggleEco}>{state.eco ? "Eco on" : "Eco off"}</button>
+            <button className="demo-chip mt-4" data-on={state.eco} onClick={actions.toggleEco}>
+              {state.eco ? "Eco on" : "Eco off"}
+            </button>
           </article>
           <article className="demo-panel p-5">
             <div className="flex items-center justify-between">
@@ -63,11 +66,11 @@ export default function IrrigationPage() {
               <span className="status-light" data-state={state.weather.raining ? "warn" : "idle"} />
             </div>
             <p className="mt-3 text-sm leading-6 text-[#afc5a7]">
-              {state.weather.raining
-                ? `Rain falling at ${Math.round(state.weather.rainIntensity * 100)}% intensity — automatic watering is paused.`
-                : "No rain detected. Automatic watering rules are armed."}
+              {state.weather.raining ? `Rain falling at ${Math.round(state.weather.rainIntensity * 100)}% intensity — automatic watering is paused.` : "No rain detected. Automatic watering rules are armed."}
             </p>
-            <span className="demo-chip mt-4 !cursor-default" data-on={state.weather.raining}><CloudRain size={13} /> {state.weather.raining ? "Paused" : "Armed"}</span>
+            <span className="demo-chip mt-4 !cursor-default" data-on={state.weather.raining}>
+              <CloudRain size={13} /> {state.weather.raining ? "Paused" : "Armed"}
+            </span>
           </article>
           <article className={`rounded-[1.25rem] border p-5 ${state.emergencyStop ? "border-[#ff6b57]/50 bg-[#3a1610]" : "border-[#b8f15a]/20 bg-[#163425]"}`}>
             <div className="flex items-center justify-between">
@@ -76,9 +79,14 @@ export default function IrrigationPage() {
             </div>
             <p className="mt-3 text-sm leading-6 text-[#afc5a7]">One physical action halts every pump and valve, regardless of schedule or rule state.</p>
             {state.emergencyStop ? (
-              <button className="demo-chip mt-4 !border-[#ff8d7a]/50 !text-[#ffc9bd]" onClick={actions.clearStop}><Play size={13} /> Clear stop</button>
+              <button className="demo-chip mt-4 !border-[#ff8d7a]/50 !text-[#ffc9bd]" onClick={actions.clearStop}>
+                <Play size={13} /> Clear stop
+              </button>
             ) : (
-              <button className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#ff6b57]/50 bg-[#ff6b57]/15 px-3.5 py-2 font-semibold text-[#ffc9bd] transition-colors hover:bg-[#ff6b57]/25" onClick={actions.emergencyStop}>
+              <button
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#ff6b57]/50 bg-[#ff6b57]/15 px-3.5 py-2 font-semibold text-[#ffc9bd] transition-colors hover:bg-[#ff6b57]/25"
+                onClick={actions.emergencyStop}
+              >
                 <OctagonX size={14} /> STOP ALL
               </button>
             )}
@@ -93,32 +101,41 @@ export default function IrrigationPage() {
           </div>
           <div className="overflow-hidden rounded-[1.3rem] border border-white/12">
             <div className="hidden grid-cols-[1.6fr_1fr_1fr_.9fr] gap-4 border-b border-white/10 bg-white/[.03] px-5 py-3 md:grid">
-              {["Zone", "Moisture / target", "Valve", "Control"].map((label) => (
-                <span key={label} className="interface text-[.56rem] font-extrabold uppercase tracking-[.14em] text-[#8fae93]">{label}</span>
+              {["Zone", "Moisture / target", "Valve", "Control"].map(label => (
+                <span key={label} className="interface text-[.56rem] font-extrabold uppercase tracking-[.14em] text-[#8fae93]">
+                  {label}
+                </span>
               ))}
             </div>
-            {state.zones.map((zone) => (
+            {state.zones.map(zone => (
               <div key={zone.id} className="grid gap-3 border-b border-white/[.07] px-5 py-4 last:border-0 md:grid-cols-[1.6fr_1fr_1fr_.9fr] md:items-center md:gap-4">
                 <div>
                   <div className="font-bold text-[#effadf]">{zone.name}</div>
-                  <div className="text-xs text-[#8fae93]">{zone.plant}{zone.pausedByRain ? " · paused by rain" : ""}</div>
+                  <div className="text-xs text-[#8fae93]">
+                    {zone.plant}
+                    {zone.pausedByRain ? " · paused by rain" : ""}
+                  </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className={`interface text-lg font-extrabold ${zone.moisture < zone.target - 6 ? "text-[#ffd49c]" : "text-[#efffd3]"}`}>{zone.moisture.toFixed(0)}%</span>
                   <span className="interface text-[.58rem] font-extrabold text-[#8fae93]">/ {zone.target.toFixed(0)}%</span>
                 </div>
                 <div>
-                  <span className={`valve-badge ${zone.valveOpen ? "valve-open" : "valve-closed"}`}>
-                    {zone.valveOpen ? "Open" : "Closed"}
-                  </span>
+                  <span className={`valve-badge ${zone.valveOpen ? "valve-open" : "valve-closed"}`}>{zone.valveOpen ? "Open" : "Closed"}</span>
                 </div>
                 <div className="flex gap-2">
                   {zone.valveOpen ? (
-                    <button className="demo-chip !border-[#ff8d7a]/50 !text-[#ffb3a4]" onClick={() => actions.stopZone(zone.id)}><Square size={12} /> Stop</button>
+                    <button className="demo-chip !border-[#ff8d7a]/50 !text-[#ffb3a4]" onClick={() => actions.stopZone(zone.id)}>
+                      <Square size={12} /> Stop
+                    </button>
                   ) : (
-                    <button className="demo-chip !border-[#b8f15a]/45 !text-[#b8f15a]" onClick={() => actions.startZone(zone.id)}><Play size={12} /> Start</button>
+                    <button className="demo-chip !border-[#b8f15a]/45 !text-[#b8f15a]" onClick={() => actions.startZone(zone.id)}>
+                      <Play size={12} /> Start
+                    </button>
                   )}
-                  <button className="demo-chip hidden sm:inline-flex" data-on={zone.auto} onClick={() => actions.setZoneAuto(zone.id, !zone.auto)}><Hand size={12} /> {zone.auto ? "Auto" : "Manual"}</button>
+                  <button className="demo-chip hidden sm:inline-flex" data-on={zone.auto} onClick={() => actions.setZoneAuto(zone.id, !zone.auto)}>
+                    <Hand size={12} /> {zone.auto ? "Auto" : "Manual"}
+                  </button>
                 </div>
               </div>
             ))}
@@ -141,9 +158,9 @@ export default function IrrigationPage() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke={chartColors.grid} strokeDasharray="3 6" vertical={false} />
-                <XAxis dataKey="t" ticks={clockTicks(state.history)} tickFormatter={tickClockLabel} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
+                <XAxis dataKey="t" ticks={clockTicks(state.history)} tickFormatter={t => tickClockLabel(t, state.settings.clock24h)} stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
                 <YAxis stroke={chartColors.axis} fontSize={10} tickLine={false} axisLine={false} />
-                <Tooltip contentStyle={tooltipStyle} labelFormatter={(t) => formatSimClock(Number(t))} />
+                <Tooltip contentStyle={tooltipStyle} labelFormatter={t => formatSimClock(Number(t), state.settings.clock24h)} />
                 <Area type="stepAfter" dataKey="flowRate" name="L/min" stroke={chartColors.lime} strokeWidth={2} fill="url(#flowFill)" isAnimationActive={false} />
               </AreaChart>
             </ResponsiveContainer>
@@ -158,7 +175,7 @@ export default function IrrigationPage() {
             <span className="interface ml-auto text-[.56rem] font-extrabold uppercase tracking-[.1em] text-[#8fae93]">latest {Math.min(state.log.length, 60)} events</span>
           </div>
           <ul className="demo-scroll max-h-96 space-y-1.5 overflow-y-auto pr-1">
-            {state.log.map((entry) => (
+            {state.log.map(entry => (
               <li key={entry.id} className="alert-item flex items-start gap-3 rounded-lg bg-white/[.03] px-3 py-2" data-kind={entry.kind}>
                 <span className="interface mt-0.5 shrink-0 text-[.56rem] font-extrabold text-[#d9a35c]">{formatSimClock(entry.simMin)}</span>
                 <span className="interface mt-0.5 w-20 shrink-0 text-[.56rem] font-extrabold uppercase tracking-[.1em] text-[#8fae93]">{entry.source}</span>

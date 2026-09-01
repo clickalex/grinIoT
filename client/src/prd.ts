@@ -368,13 +368,13 @@ export const prdSections: PrdSection[] = [
     table: {
       head: ["Aspect", "Current implementation", "Product target"],
       rows: [
-        ["Frontend", "React 19 + Vite + Tailwind 4, multi-page site (9 chapters + live demo)", "Mobile app (dashboard, garden, zones, water, weather, pest, irrigation, fertilizer, growth, analytics, tasks, settings)"],
-        ["Live demo", "In-browser simulation: weather, soil decay, rule engine, tank, rain, eco mode, event log; per-page SEO titles; lazy-loaded routes", "Dry-run/simulation mode on-device before first automatic watering — the demo previews it"],
+        ["Frontend", "React 19 + Vite + Tailwind 4, multi-page site (9 chapters + a 14-page live demo)", "Mobile app (dashboard, garden, zones, water, weather, pest, irrigation, fertilizer, growth, analytics, tasks, settings)"],
+        ["Live demo", "In-browser simulation across 14 pages: weather, soil decay, rule engine with schedule windows and guardrails, tank, rain harvest, eco mode, dry-run preview, device fleet with faults and OTA, fertilizer dosing, camera review, generated tasks, event log; per-page SEO titles; lazy-loaded routes", "Dry-run/simulation mode on-device before first automatic watering — the demo previews it"],
         ["Telemetry", "Simulated MQTT-style topic feed (grinrex/edge/…)", "Real MQTT/WebSocket from the edge controller to the app and cloud"],
         ["Charts & analytics", "Recharts: live moisture, tank, flow; 14-day water record", "Product analytics: daily/weekly/monthly, rainwater share, savings, per-zone consumption"],
         ["Documents", "Single consolidated PRD page with Markdown export (this page)", "Living PRD reviewed at every release gate; risk register refreshed monthly"],
         ["Deployment", "Static SPA; Express static server; Vite dev on port 3000", "Managed cloud platform; device provisioning; signed OTA pipeline"],
-        ["Quality", "TypeScript strict; 15/15 route smoke tests; 12/12 demo interaction checks", "Bench tests for stuck valves, dry pumps, sensor faults, power loss; pilot telemetry review"],
+        ["Quality", "TypeScript strict; 24/24 route smoke tests; 50/50 demo interaction checks; a 156-check data audit over the engine, every page render, and the routing between them", "Bench tests for stuck valves, dry pumps, sensor faults, power loss; pilot telemetry review"],
         ["Security", "No credentials or backend in the demo; static content only", "Full §11 security requirements before pilots"],
       ],
     },
